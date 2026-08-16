@@ -8,9 +8,7 @@
 //   Filter by assignee: ?assignee=AI_Developer_Mayur
 
 import { NextResponse, type NextRequest } from "next/server";
-import { db, isFirebaseConfigured } from "@/lib/firebase";
-import { getAllTickets } from "@/lib/firestore";
-import { getLocalTickets } from "@/lib/localStore";
+import { getProvider } from "@/lib/db/provider";
 
 export const revalidate = 0; // always fresh
 
@@ -19,12 +17,8 @@ export async function GET(req: NextRequest) {
   const assigneeFilter = searchParams.get("assignee");
 
   try {
-    let tickets;
-    if (isFirebaseConfigured && db) {
-      tickets = await getAllTickets(db);
-    } else {
-      tickets = getLocalTickets();
-    }
+    const provider = getProvider();
+    const tickets = await provider.getAllTickets();
 
     let active = tickets.filter((t) => t.agentPickup);
     if (assigneeFilter) {

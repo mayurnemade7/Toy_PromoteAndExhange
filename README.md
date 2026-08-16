@@ -31,6 +31,28 @@ This is a modern monorepo powered by **Turborepo** and **pnpm**.
 pnpm install
 ```
 
+### Database Configuration (Switchable)
+The Agile Dashboard supports multiple data providers. It uses a unified `DatabaseProvider` interface.
+By default, the API reads from `lib/localStore.ts` if Firebase is not configured.
+To force a specific provider, you can use the `.env` variable:
+```env
+NEXT_PUBLIC_DB_PROVIDER=local
+# OR
+NEXT_PUBLIC_DB_PROVIDER=firebase
+```
+
+### Deployment Options
+The monorepo is fully configured to be easily deployed to multiple cloud providers natively!
+
+**Vercel (Recommended for Next.js):**
+Simply connect your GitHub repository to Vercel. The included `vercel.json` ensures that Turborepo is properly utilized and the dashboard is deployed automatically.
+
+**Firebase App Hosting:**
+We have also included a `firebase.json` configured for Firebase's Next.js integration.
+```bash
+firebase deploy --only hosting
+```
+
 ### Running Locally
 To start the development servers:
 ```bash

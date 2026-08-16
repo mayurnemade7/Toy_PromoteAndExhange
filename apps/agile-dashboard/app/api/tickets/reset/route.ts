@@ -1,18 +1,14 @@
 import { NextResponse } from "next/server";
-import { db, isFirebaseConfigured } from "@/lib/firebase";
-import { resetFirestoreTickets } from "@/lib/firestore";
-import { resetLocalTickets } from "@/lib/localStore";
+import { getProvider } from "@/lib/db/provider";
 
 export const revalidate = 0;
 
 export async function POST() {
   try {
-    let tickets;
-    if (isFirebaseConfigured && db) {
-      tickets = await resetFirestoreTickets(db);
-    } else {
-      tickets = resetLocalTickets();
-    }
+    const provider = getProvider();
+    await provider.resetTickets();
+    const tickets = await provider.getAllTickets();
+    
     return NextResponse.json(
       { ok: true, message: "Dashboard reset to scratch!", count: tickets.length, tickets },
       { headers: { "Cache-Control": "no-store", "Content-Type": "application/json" } }

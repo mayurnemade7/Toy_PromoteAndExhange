@@ -1,7 +1,5 @@
 "use client";
 import { useEffect, useState, useCallback } from "react";
-import { db, isFirebaseConfigured } from "@/lib/firebase";
-import { subscribeToTickets, saveTicket, removeTicket, seedIfEmpty } from "@/lib/firestore";
 import { SEED_TICKETS } from "@/lib/seed";
 import type { Ticket, TicketStatus, AssigneePersona, Priority } from "@/lib/types";
 import { STATUS_ORDER } from "@/lib/types";
@@ -14,71 +12,59 @@ export function useTickets() {
 
   // ── Initialize ─────────────────────────────────────────────
   useEffect(() => {
-    if (isFirebaseConfigured && db) {
-      setSyncState("connecting");
-      seedIfEmpty(db).catch(console.error);
-      const unsub = subscribeToTickets(
-        db,
-        (t) => { setTickets(t); setSyncState("live"); },
-        (err) => { console.error(err); setSyncState("error"); }
-      );
-      return unsub;
-    } else {
-      setSyncState("local");
-      const fetchLocalTickets = async () => {
-        try {
-          const res = await fetch("/api/tickets", { cache: "no-store" });
-          if (res.ok) {
-            const data = await res.json();
-            if (data.tickets) {
-              setTickets(data.tickets);
-            }
-          }
-        } catch (err) {
-          console.warn("Failed to fetch tickets from /api/tickets, using seed fallback:", err);
-          setTickets(SEED_TICKETS);
-        }
-      };
+    // Determine sync state based on the env configuration (we can check process.env or just rely on API)
+    setSyncState("connecting");
 
-      fetchLocalTickets();
-      const interval = setInterval(fetchLocalTickets, 2500);
-      return () => clearInterval(interval);
-    }
+    const fetchTickets = async () => {
+      try {
+        const res = await fetch("/api/tickets", { cache: "no-store" });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.tickets) {
+            setTickets(data.tickets);
+            setSyncState("live");
+          }
+        } else {
+          setSyncState("error");
+        }
+      } catch (err) {
+        console.warn("Failed to fetch tickets from /api/tickets, using seed fallback:", err);
+        setTickets(SEED_TICKETS);
+        setSyncState("error");
+      }
+    };
+
+    fetchTickets();
+    const interval = setInterval(fetchTickets, 2500);
+    return () => clearInterval(interval);
   }, []);
 
   // ── Actions ────────────────────────────────────────────────
   const persist = useCallback(async (ticket: Ticket) => {
+    // Optimistic UI update
     setTickets((prev) => {
       const idx = prev.findIndex((t) => t.id === ticket.id);
       if (idx >= 0) { const next = [...prev]; next[idx] = ticket; return next; }
       return [...prev, ticket];
     });
 
-    if (isFirebaseConfigured && db) {
-      await saveTicket(db, ticket);
-    } else {
-      try {
-        await fetch("/api/tickets", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ ticket }),
-        });
-      } catch (err) {
-        console.error("Failed to persist ticket via /api/tickets:", err);
-      }
+    try {
+      await fetch("/api/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ticket }),
+      });
+    } catch (err) {
+      console.error("Failed to persist ticket via /api/tickets:", err);
     }
   }, []);
 
   const deleteTicket = useCallback(async (id: string) => {
     setTickets((prev) => prev.filter((t) => t.id !== id));
-    if (isFirebaseConfigured && db) {
-      await removeTicket(db, id);
-    } else {
-      try {
-        await fetch(`/api/tickets?id=${encodeURIComponent(id)}`, { method: "DELETE" });
-      } catch (err) {
-        console.error("Failed to delete ticket via /api/tickets:", err);
-      }
+    try {
+      await fetch(`/api/tickets?id=${encodeURIComponent(id)}`, { method: "DELETE" });
+    } catch (err) {
+      console.error("Failed to delete ticket via /api/tickets:", err);
     }
   }, []);
 

@@ -2,6 +2,7 @@ import fs from "fs";
 import path from "path";
 import type { Ticket } from "./types";
 import { SEED_TICKETS } from "./seed";
+import type { DatabaseProvider } from "./db/interface";
 
 const DATA_DIR = path.join(process.cwd(), "data");
 const FILE_PATH = path.join(DATA_DIR, "tickets.json");
@@ -37,37 +38,38 @@ function persistToFile(tickets: Ticket[]): void {
   }
 }
 
-export function getLocalTickets(): Ticket[] {
-  return ensureDataFile();
-}
+export const LocalProvider: DatabaseProvider = {
+  getAllTickets(): Ticket[] {
+    return ensureDataFile();
+  },
 
-export function saveLocalTicket(ticket: Ticket): Ticket {
-  const tickets = ensureDataFile();
-  const idx = tickets.findIndex((t) => t.id === ticket.id);
-  if (idx >= 0) {
-    tickets[idx] = ticket;
-  } else {
-    tickets.push(ticket);
+  resetTickets(): void {
+    memoryTickets = [];
+    persistToFile(memoryTickets);
+  },
+
+  persistTicket(ticket: Ticket): void {
+    const tickets = ensureDataFile();
+    const idx = tickets.findIndex((t) => t.id === ticket.id);
+    if (idx >= 0) {
+      tickets[idx] = ticket;
+    } else {
+      tickets.push(ticket);
+    }
+    memoryTickets = tickets;
+    persistToFile(tickets);
   }
-  memoryTickets = tickets;
-  persistToFile(tickets);
-  return ticket;
-}
+};
 
-export function deleteLocalTicket(id: string): boolean {
+// Legacy exports to ensure backwards compatibility temporarily during refactor
+export const getLocalTickets = () => LocalProvider.getAllTickets();
+export const saveLocalTicket = (ticket: Ticket) => { LocalProvider.persistTicket(ticket); return ticket; };
+export const deleteLocalTicket = (id: string): boolean => {
   const tickets = ensureDataFile();
   const next = tickets.filter((t) => t.id !== id);
   const deleted = next.length < tickets.length;
   memoryTickets = next;
   persistToFile(next);
   return deleted;
-}
-
-export function resetLocalTickets(): Ticket[] {
-  memoryTickets = [];
-  persistToFile(memoryTickets);
-  return memoryTickets;
-}
-
-
-
+};
+export const resetLocalTickets = () => { LocalProvider.resetTickets(); return memoryTickets; };
