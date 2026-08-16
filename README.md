@@ -10,12 +10,12 @@ This is a modern monorepo powered by **Turborepo** and **pnpm**.
 
 ### Apps
 - **`apps/agile-dashboard`**: A Next.js application used by our team (and AI Agents) for sprint planning, story tracking, and Kanban management. It acts as our internal command center.
-- **`apps/frontend`**: (Planned) The main user-facing web application where users can swipe through toy reels, propose trades, and manage their inventory.
+- **`apps/frontend`**: The main user-facing web application where users can swipe through toy reels, propose trades, and manage their inventory. Currently live at: [toy-exchange-frontend.vercel.app](https://toy-exchange-frontend.vercel.app/).
 - **`apps/backend`**: (Planned) The backend services and APIs powering the platform.
 
 ### Key Technologies
 - **Framework**: Next.js (React)
-- **Database**: Firebase (Firestore) for real-time ticket and toy data
+- **Database**: Firebase (Firestore) for real-time ticket and toy data. It features an agnostic database abstraction layer (`lib/db/provider.ts`) and uses collections for `agile_tickets`, `users`, `toys`, and `exchanges`.
 - **Styling**: Vanilla CSS & CSS Modules (Glassmorphism design system)
 - **Monorepo Tooling**: Turborepo & pnpm
 
