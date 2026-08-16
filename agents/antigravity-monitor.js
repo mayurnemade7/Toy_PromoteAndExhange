@@ -1,10 +1,13 @@
 const http = require('http');
+const https = require('https');
 
-const AGILE_URL = 'http://localhost:3000/api/active-stories';
+const baseUrl = process.env.AGILE_URL || 'https://agile-dashboard-umber.vercel.app';
+const AGILE_URL = `${baseUrl}/api/active-stories`;
 const seen = new Set();
 
 function poll() {
-  http.get(AGILE_URL, (res) => {
+  const client = AGILE_URL.startsWith('https') ? https : http;
+  client.get(AGILE_URL, (res) => {
     let data = '';
     res.on('data', chunk => data += chunk);
     res.on('end', () => {
