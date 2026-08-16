@@ -17,7 +17,7 @@ const DEFAULT_FILTERS: Filters = { assignee: "ALL", priority: "ALL", agentOnly: 
 export default function AgileDashboard() {
   const {
     tickets, syncState, activeStories,
-    persist, deleteTicket, advanceStatus, toggleAgentPickup, createTicket,
+    persist, deleteTicket, advanceStatus, toggleAgentPickup, createTicket, resetBoard,
   } = useTickets();
 
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
@@ -55,6 +55,13 @@ export default function AgileDashboard() {
     showToast("✅ Story created!");
   }, [createTicket]);
 
+  const handleReset = useCallback(async () => {
+    if (window.confirm("Are you sure you want to reset all stories to 'To-Do' and scratch state?")) {
+      await resetBoard();
+      showToast("🔄 Agile Board reset to scratch!");
+    }
+  }, [resetBoard]);
+
   const handleExport = useCallback(() => {
     const header = "ID,Title,Description,Assignee,Priority,Points,Status,AgentActive\n";
     const rows = tickets.map((t) =>
@@ -71,7 +78,8 @@ export default function AgileDashboard() {
 
   return (
     <div className={styles.page}>
-      <Header syncState={syncState} onCreateStory={() => setCreateOpen(true)} onExport={handleExport} />
+      <Header syncState={syncState} onCreateStory={() => setCreateOpen(true)} onExport={handleExport} onReset={handleReset} />
+
 
       <main className={styles.main}>
         <StatsBar tickets={tickets} />

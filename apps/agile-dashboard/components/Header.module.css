@@ -65,4 +65,11 @@
   box-shadow: 0 4px 14px rgba(139,92,246,.35);
 }
 .primary:hover { box-shadow: 0 6px 22px rgba(139,92,246,.55); transform: translateY(-1px); }
+.danger {
+  background: rgba(239, 68, 68, 0.15);
+  border: 1px solid rgba(239, 68, 68, 0.4) !important;
+  color: #FCA5A5;
+}
+.danger:hover { background: rgba(239, 68, 68, 0.3); transform: translateY(-1px); }
 @media (max-width: 767px) { .hideOnMobile { display: none; } }
+

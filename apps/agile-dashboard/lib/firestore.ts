@@ -51,3 +51,12 @@ export async function getAllTickets(db: Firestore): Promise<Ticket[]> {
   const snap = await getDocs(collection(db, COL));
   return snap.docs.map((d) => ({ ...d.data(), id: d.id } as Ticket));
 }
+
+export async function resetFirestoreTickets(db: Firestore): Promise<Ticket[]> {
+  const snap = await getDocs(collection(db, COL));
+  await Promise.all(snap.docs.map((d) => deleteDoc(d.ref)));
+  return [];
+}
+
+
+

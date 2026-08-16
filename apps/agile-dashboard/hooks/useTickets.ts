@@ -112,10 +112,25 @@ export function useTickets() {
     return ticket;
   }, [persist]);
 
+  const resetBoard = useCallback(async () => {
+    try {
+      const res = await fetch("/api/tickets/reset", { method: "POST" });
+      if (res.ok) {
+        const data = await res.json();
+        if (data.tickets) {
+          setTickets(data.tickets);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to reset board via /api/tickets/reset:", err);
+    }
+  }, []);
+
   const activeStories = tickets.filter((t) => t.agentPickup);
 
   return {
     tickets, syncState, activeStories,
-    persist, deleteTicket, advanceStatus, toggleAgentPickup, createTicket,
+    persist, deleteTicket, advanceStatus, toggleAgentPickup, createTicket, resetBoard,
   };
 }
+

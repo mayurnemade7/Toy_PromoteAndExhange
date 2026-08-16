@@ -18,10 +18,10 @@ function ensureDataFile(): Ticket[] {
       return memoryTickets!;
     }
   } catch (err) {
-    console.warn("Failed to read local tickets file, using SEED_TICKETS fallback:", err);
+    console.warn("Failed to read local tickets file:", err);
   }
 
-  memoryTickets = [...SEED_TICKETS];
+  memoryTickets = [];
   persistToFile(memoryTickets);
   return memoryTickets;
 }
@@ -62,3 +62,12 @@ export function deleteLocalTicket(id: string): boolean {
   persistToFile(next);
   return deleted;
 }
+
+export function resetLocalTickets(): Ticket[] {
+  memoryTickets = [];
+  persistToFile(memoryTickets);
+  return memoryTickets;
+}
+
+
+
