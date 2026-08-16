@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# Firebase sensitive config — NEVER commit real keys
+company/agile_dashboard/firebase-config.js
+.env
+.env.local
+.env.*.local
+
+# Build outputs
+dist/
+.next/
+.turbo/
+.firebase/
+firebase-debug.log
+.firebaserc.local
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/settings.json
+.idea/

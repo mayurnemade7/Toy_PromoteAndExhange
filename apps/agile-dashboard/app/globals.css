@@ -1,0 +1,70 @@
+/* ─────────────────────────────────────────────────
+   Toy Exchange Agile Dashboard — Design System
+   ───────────────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap');
+
+:root {
+  --bg: #0B0F19;
+  --bg-card: rgba(22,28,45,0.85);
+  --bg-col: rgba(15,21,37,0.72);
+  --border: rgba(255,255,255,0.1);
+  --primary: hsl(265,89%,66%);
+  --primary-rgb: 139,92,246;
+  --magenta: hsl(330,85%,60%);
+  --cyan: hsl(190,90%,50%);
+  --green: hsl(145,75%,45%);
+  --red: hsl(0,85%,60%);
+  --gold: hsl(45,95%,55%);
+  --text: #F3F4F6;
+  --muted: #9CA3AF;
+  --font: 'Inter', sans-serif;
+  --heading: 'Outfit', sans-serif;
+  --radius: 12px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { color-scheme: dark; }
+
+body {
+  background: var(--bg);
+  background-image:
+    radial-gradient(at 0% 0%, rgba(139,92,246,.18) 0, transparent 55%),
+    radial-gradient(at 100% 100%, rgba(236,72,153,.13) 0, transparent 55%);
+  color: var(--text);
+  font-family: var(--font);
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(139,92,246,.4); border-radius: 3px; }
+
+/* Focus ring */
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; border-radius: 4px; }
+
+/* Inputs base */
+input, select, textarea {
+  background: rgba(11,15,25,.85);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 7px;
+  font-size: 16px; /* Prevents auto-zoom on mobile browsers */
+  font-family: var(--font);
+  transition: border-color .2s;
+  outline: none;
+  width: 100%;
+}
+input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+textarea { resize: vertical; min-height: 100px; line-height: 1.6; }
+
+/* Animations */
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+@keyframes spin { to{transform:rotate(360deg)} }
+@keyframes slideUp { from{transform:translateY(60px);opacity:0} to{transform:translateY(0);opacity:1} }
+@keyframes slideRight { from{transform:translateX(40px);opacity:0} to{transform:translateX(0);opacity:1} }
+@keyframes fadeIn { from{opacity:0;transform:scale(.97)} to{opacity:1;transform:scale(1)} }

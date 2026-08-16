@@ -1,0 +1,12 @@
+.col {
+  background: var(--bg-col); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 14px; min-height: 420px;
+  display: flex; flex-direction: column;
+}
+.active { border-color: rgba(0,210,255,.3); }
+.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 2px solid rgba(255,255,255,.05); }
+.title { font-size: .88rem; font-weight: 700; }
+.count { background: rgba(255,255,255,.1); font-size: .72rem; padding: 2px 8px; border-radius: 12px; color: var(--muted); font-weight: 700; }
+.cards { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.empty { text-align: center; color: var(--muted); font-size: .8rem; padding: 24px 12px; opacity: .6; }
+@media (max-width: 767px) { .col { min-height: auto; } }

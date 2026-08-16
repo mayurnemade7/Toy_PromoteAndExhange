@@ -1,0 +1,359 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "OjasMetKrishnaReelDataset",
+  "description": "Schema and dataset mapping @ojas_met_krishna Instagram Reels, play-testing notes, skill taxonomy, and local Ravet parent toy exchange listings.",
+  "schemaVersion": "1.0.0",
+  "channelMetadata": {
+    "handle": "@ojas_met_krishna",
+    "channelName": "Ojas Met Krishna - Developmental Play & Toy Reviews",
+    "targetAudience": "Parents in Ravet, Wakad, Pimple Saudagar, and PCMC Pune area",
+    "primaryPlatform": "Instagram Reels",
+    "linkedWebPlatform": "Ravet Parent Toy Exchange Platform (https://ravettoyexchange.in)"
+  },
+  "locationContext": {
+    "city": "Pune",
+    "district": "PCMC",
+    "primaryLocality": "Ravet",
+    "pincode": "411044",
+    "supportedSubLocalities": [
+      "Ravet Sector 29",
+      "Ravet BRT Road",
+      "Kiwale",
+      "Pradhikaran",
+      "Shinde Vasti",
+      "Ganesh Nagar Ravet",
+      "Vikas Nagar"
+    ]
+  },
+  "taxonomy": {
+    "ageBrackets": [
+      { "code": "0-6M", "label": "Infant (0-6 Months)", "focus": "Sensory stimulation, high contrast, tracking, reach & grasp" },
+      { "code": "6-12M", "label": "Sitter/Crawler (6-12 Months)", "focus": "Cause & effect, palmar grasp, object permanence, sitting stability" },
+      { "code": "12-18M", "label": "Toddler Beginner (12-18 Months)", "focus": "Pincer grip, spatial sorting, stacking, early words, walking support" },
+      { "code": "18-24M", "label": "Toddler Explorer (18-24 Months)", "focus": "Problem solving, magnetic building, bilateral coordination, pretend play" },
+      { "code": "2-3Y", "label": "Pre-schooler (2-3 Years)", "focus": "Fine motor precision, color/shape matching, imaginative story play, language expansion" },
+      { "code": "3-5Y", "label": "Junior Learner (3-5 Years)", "focus": "STEM fundamentals, complex puzzles, social sharing, construction logic" }
+    ],
+    "skillCategories": [
+      { "id": "SKILL_FINE_MOTOR", "name": "Fine Motor & Pincer Grip", "icon": "👐" },
+      { "id": "SKILL_GROSS_MOTOR", "name": "Gross Motor & Balance", "icon": "🏃" },
+      { "id": "SKILL_COGNITIVE", "name": "Cognitive & Spatial Reasoning", "icon": "🧠" },
+      { "id": "SKILL_SENSORY", "name": "Sensory Processing (Tactile/Auditory/Visual)", "icon": "✨" },
+      { "id": "SKILL_LANGUAGE", "name": "Language & Communication Expansion", "icon": "🗣️" },
+      { "id": "SKILL_STEM", "name": "STEM & Cause-and-Effect Engineering", "icon": "⚙️" },
+      { "id": "SKILL_SOCIAL_EMOTIONAL", "name": "Social-Emotional & Independent Play", "icon": "❤️" }
+    ],
+    "cameraAngles": [
+      { "code": "ANG_MACRO", "name": "Macro Close-Up", "description": "Focused on fingers, toy mechanisms, texture, precision clicks" },
+      { "code": "ANG_TODDLER_POV", "name": "Toddler POV", "description": "Over-the-shoulder angle matching Ojas' line of sight" },
+      { "code": "ANG_FACE_REACTION", "name": "Face & Expression Cutaway", "description": "Captures toddler delight, focus, or 'eureka' moments" },
+      { "code": "ANG_WIDE_COPLAY", "name": "Wide Parent-Child Co-Play", "description": "Shows parent guided interaction and floor play setup" },
+      { "code": "ANG_FLATLAY", "name": "Top-Down Flatlay", "description": "Clean grid view showcasing toy pieces and age badge overlay" }
+    ]
+  },
+  "reels": [
+    {
+      "reelId": "REEL-2026-001",
+      "reelSlug": "montessori-shape-sorter-cube-ojas",
+      "title": "Why 14-Month-Old Ojas Spent 25 Minutes Focused On This Wooden Sorter Cube!",
+      "status": "PUBLISHED",
+      "videoDurationSeconds": 45,
+      "targetToy": {
+        "toyId": "TOY-RAVET-101",
+        "name": "Montessori 3D Wooden Shape Sorting Cube",
+        "brand": "Shumee Organic Toys",
+        "category": "Educational Wooden Toys",
+        "recommendedAgeMonths": { "min": 12, "max": 24 },
+        "marketValueINR": 1299,
+        "ravetExchangePoints": 15,
+        "availabilityStatus": "AVAILABLE",
+        "currentOwnerLocation": "Sector 29, Ravet (Near Celestial City)",
+        "condition": "Like New (Sanitized Wood)"
+      },
+      "metadata": {
+        "ageBracket": "12-18M",
+        "primarySkillIds": ["SKILL_FINE_MOTOR", "SKILL_COGNITIVE"],
+        "developmentalMilestones": ["Palmar to Pincer grasp transition", "3D shape perception", "Trial-and-error problem solving"],
+        "sensoryAttributes": ["Natural Teak Finish", "Smooth Edges", "Acoustic Wooden Drop Sound"],
+        "hashtags": [
+          "#RavetParents",
+          "#OjasMetKrishna",
+          "#MontessoriRavet",
+          "#PuneMoms",
+          "#ToyExchangeRavet",
+          "#ToddlerPlayIdeas",
+          "#FineMotorSkills"
+        ]
+      },
+      "playTestingNotes": {
+        "playSessionDate": "2026-08-10",
+        "toddlerAgeAtTestingMonths": 14,
+        "sessionDurationMinutes": 25,
+        "observedBehavior": "Ojas first attempted to fit the square block into the triangular hole. After 3 tries, he rotated the block, aligned the angle, and dropped it in. Displayed spontaneous clapping upon success.",
+        "frustrationLevel": "Low (smooth guidance, no sharp edges)",
+        "repeatPlayScore": 4.9,
+        "parentSafetyCheck": "Pass - Non-toxic vegetable paint, 0 small part choking hazards"
+      },
+      "scriptBreakdown": [
+        {
+          "step": 1,
+          "timeRange": "00:00 - 00:03",
+          "phase": "HOOK",
+          "visualScene": "Ultra close-up of Ojas' tiny fingers dropping a wooden cylinder into the slot with a satisfying crisp *CLACK* sound.",
+          "audioVoiceover": "Stop spending ₹1,500 on battery-operated noisy toys your toddler ignores after 2 days!",
+          "onScreenText": "Stop buying battery junk! 🛑",
+          "cameraAngle": "ANG_MACRO",
+          "textBadge": "Age: 12-18 Months"
+        },
+        {
+          "step": 2,
+          "timeRange": "00:03 - 00:10",
+          "phase": "PROBLEM_STATEMENT",
+          "visualScene": "Side-by-side split screen showing a dusty plastic flashing keyboard vs Ojas deeply engrossed in turning the wooden cube.",
+          "audioVoiceover": "At 14 months, Ojas doesn't need flashing lights. He needs spatial reasoning and pincer grip practice.",
+          "onScreenText": "Real Focus > Flashing Lights 🧠",
+          "cameraAngle": "ANG_TODDLER_POV",
+          "textBadge": "Skill: Spatial Logic"
+        },
+        {
+          "step": 3,
+          "timeRange": "00:10 - 00:26",
+          "phase": "PLAY_DEMONSTRATION",
+          "visualScene": "Medium shot of Ojas turning the triangle block, struggling for 2 seconds, then discovering the right slot. Quick cut to his beaming smile.",
+          "audioVoiceover": "Watch how he rotates the triangle. This trial-and-error builds early problem-solving pathways in the brain.",
+          "onScreenText": "Watch the Pincer Grip! 🤏",
+          "cameraAngle": "ANG_FACE_REACTION",
+          "textBadge": "Skill: Fine Motor"
+        },
+        {
+          "step": 4,
+          "timeRange": "00:26 - 00:36",
+          "phase": "RAVET_COMMUNITY_VALUE",
+          "visualScene": "Parent holding the Ravet Parent Toy Exchange app on phone screen next to the real wooden cube on the play mat.",
+          "audioVoiceover": "Instead of buying this ₹1,300 Shumee cube, we got it from a parent right here in Ravet Sector 29 for 15 exchange coins!",
+          "onScreenText": "₹1,300 retail vs Free Exchange in Ravet 📍",
+          "cameraAngle": "ANG_WIDE_COPLAY",
+          "textBadge": "Ravet Sector 29"
+        },
+        {
+          "step": 5,
+          "timeRange": "00:36 - 00:45",
+          "phase": "CALL_TO_ACTION",
+          "visualScene": "Ojas waving goodbye while holding the cube, with animated arrow pointing to the bio link / comment prompt.",
+          "audioVoiceover": "Comment 'SORTER' below to get the direct Ravet Exchange link and borrow it for your toddler today!",
+          "onScreenText": "Comment 'SORTER' to Borrow in Ravet! 🔗",
+          "cameraAngle": "ANG_FLATLAY",
+          "textBadge": "Scan or DM for Link"
+        }
+      ],
+      "webPlatformMapping": {
+        "toyListingId": "TOY-RAVET-101",
+        "webUrl": "https://ravettoyexchange.in/toys/TOY-RAVET-101",
+        "manyChatKeyword": "SORTER",
+        "autoDmMessage": "Hey Ravet Parent! 👶 Here is the direct link to borrow Ojas' Montessori Wooden Shape Sorter (TOY-RAVET-101) from Sector 29: https://ravettoyexchange.in/toys/TOY-RAVET-101",
+        "qrCodeData": "RAVET-EXCHANGE://toy/TOY-RAVET-101"
+      }
+    },
+    {
+      "reelId": "REEL-2026-002",
+      "reelSlug": "magnetic-building-tiles-ojas-stem",
+      "title": "Magnetic Building Tiles: How Ojas Learned 3D Balance at 18 Months!",
+      "status": "PUBLISHED",
+      "videoDurationSeconds": 50,
+      "targetToy": {
+        "toyId": "TOY-RAVET-204",
+        "name": "60-Piece Translucent Magnetic Building Tiles Set",
+        "brand": "Playmags / Connetix Compatible",
+        "category": "STEM & Construction",
+        "recommendedAgeMonths": { "min": 18, "max": 48 },
+        "marketValueINR": 2499,
+        "ravetExchangePoints": 25,
+        "availabilityStatus": "AVAILABLE",
+        "currentOwnerLocation": "Ravet BRT Road (Near Urban 100)",
+        "condition": "Excellent (Rivet Reinforced Safe Magnet)"
+      },
+      "metadata": {
+        "ageBracket": "18-24M",
+        "primarySkillIds": ["SKILL_STEM", "SKILL_COGNITIVE", "SKILL_GROSS_MOTOR"],
+        "developmentalMilestones": ["3D spatial construction", "Magnetic attraction principles", "Hand-eye alignment under resistance"],
+        "sensoryAttributes": ["Translucent Color Filtering", "Magnetic Snap Sound", "Sunlight Prism Reflections"],
+        "hashtags": [
+          "#RavetParents",
+          "#OjasMetKrishna",
+          "#STEMToysRavet",
+          "#MagneticTiles",
+          "#PuneParents",
+          "#PCMCKids"
+        ]
+      },
+      "playTestingNotes": {
+        "playSessionDate": "2026-08-12",
+        "toddlerAgeAtTestingMonths": 18,
+        "sessionDurationMinutes": 35,
+        "observedBehavior": "Ojas loved sticking tiles against the sunlight window to create colorful shadows, then stacked 4 tiles vertically before knocked them down with delight.",
+        "frustrationLevel": "Very Low (magnets snap together effortlessly)",
+        "repeatPlayScore": 5.0,
+        "parentSafetyCheck": "Pass - Ultrasonic welded edges with metal rivets, magnets sealed tight"
+      },
+      "scriptBreakdown": [
+        {
+          "step": 1,
+          "timeRange": "00:00 - 00:03",
+          "phase": "HOOK",
+          "visualScene": "Sunlight streaming through colorful magnetic tiles on the glass window as Ojas snaps a purple triangle into place with a loud *SNAP*.",
+          "audioVoiceover": "This one toy replaced 5 expensive activity boxes for Ojas!",
+          "onScreenText": "1 Toy Replaced 5 Boxes! 🌈",
+          "cameraAngle": "ANG_MACRO",
+          "textBadge": "Age: 18M - 4Y"
+        },
+        {
+          "step": 2,
+          "timeRange": "00:03 - 00:12",
+          "phase": "PROBLEM_STATEMENT",
+          "visualScene": "Ojas holding the tiles up to his eyes, looking through red and blue translucent filters at the camera.",
+          "audioVoiceover": "Buying ₹2,500 magnetic sets can hurt your budget, especially when kids change interests every month.",
+          "onScreenText": "₹2,500 Retail Cost 💸",
+          "cameraAngle": "ANG_FACE_REACTION",
+          "textBadge": "Skill: Color & Light"
+        },
+        {
+          "step": 3,
+          "timeRange": "00:12 - 00:30",
+          "phase": "PLAY_DEMONSTRATION",
+          "visualScene": "Time-lapse of Ojas building a mini 3D cube tower with parent encouragement, then laughing as it collapses.",
+          "audioVoiceover": "At 18 months, building up and knocking down teaches gravity, magnetism, and emotional resilience when structures break!",
+          "onScreenText": "Magnetism + Gravity 🧲",
+          "cameraAngle": "ANG_WIDE_COPLAY",
+          "textBadge": "Skill: STEM Logic"
+        },
+        {
+          "step": 4,
+          "timeRange": "00:30 - 00:40",
+          "phase": "RAVET_COMMUNITY_VALUE",
+          "visualScene": "Parent showing pickup verification badge on the Ravet Toy Exchange app from a neighbor on BRT Road.",
+          "audioVoiceover": "Picked this up from a doctor family on Ravet BRT road for 25 points. Total exchange time: 10 minutes!",
+          "onScreenText": "Picked up locally on Ravet BRT Road 🚗",
+          "cameraAngle": "ANG_TODDLER_POV",
+          "textBadge": "Ravet BRT Cluster"
+        },
+        {
+          "step": 5,
+          "timeRange": "00:40 - 00:50",
+          "phase": "CALL_TO_ACTION",
+          "visualScene": "Ojas handing a tile to camera with link graphics.",
+          "audioVoiceover": "Drop 'TILES' in the comments to swap or borrow this magnetic tile set from a Ravet neighbor!",
+          "onScreenText": "Comment 'TILES' to Borrow! 💬",
+          "cameraAngle": "ANG_FLATLAY",
+          "textBadge": "Ravet Toy Exchange"
+        }
+      ],
+      "webPlatformMapping": {
+        "toyListingId": "TOY-RAVET-204",
+        "webUrl": "https://ravettoyexchange.in/toys/TOY-RAVET-204",
+        "manyChatKeyword": "TILES",
+        "autoDmMessage": "Hey Ravet Parent! 🧲 Here is the direct link to borrow the 60-Piece Magnetic Tiles Set (TOY-RAVET-204) from Ravet BRT Road: https://ravettoyexchange.in/toys/TOY-RAVET-204",
+        "qrCodeData": "RAVET-EXCHANGE://toy/TOY-RAVET-204"
+      }
+    },
+    {
+      "reelId": "REEL-2026-003",
+      "reelSlug": "wooden-gear-turning-board-ojas",
+      "title": "Gear Turning Board: Building Cause & Effect Motor Skills with Ojas!",
+      "status": "DRAFT",
+      "videoDurationSeconds": 40,
+      "targetToy": {
+        "toyId": "TOY-RAVET-309",
+        "name": "Interlocking Wooden Rainbow Gear Board",
+        "brand": "Melissa & Doug / Hape Equivalent",
+        "category": "Interlocking Mechanics",
+        "recommendedAgeMonths": { "min": 15, "max": 36 },
+        "marketValueINR": 999,
+        "ravetExchangePoints": 10,
+        "availabilityStatus": "AVAILABLE",
+        "currentOwnerLocation": "Kiwale (Near Sentosa Resort / Ravet Boundary)",
+        "condition": "Great"
+      },
+      "metadata": {
+        "ageBracket": "12-18M",
+        "primarySkillIds": ["SKILL_FINE_MOTOR", "SKILL_STEM"],
+        "developmentalMilestones": ["Rotational finger movements", "Interlocking gear mechanics", "Sequential reasoning"],
+        "sensoryAttributes": ["Vibrant Rainbow Colors", "Smooth Spinning Motion"],
+        "hashtags": [
+          "#RavetParents",
+          "#OjasMetKrishna",
+          "#FineMotorDevelopment",
+          "#KiwaleParents",
+          "#PuneToySwap"
+        ]
+      },
+      "playTestingNotes": {
+        "playSessionDate": "2026-08-14",
+        "toddlerAgeAtTestingMonths": 15,
+        "sessionDurationMinutes": 20,
+        "observedBehavior": "Ojas figured out that spinning one main red handle turns 6 other gears simultaneously. Fascinated by the continuous motion.",
+        "frustrationLevel": "Low",
+        "repeatPlayScore": 4.7,
+        "parentSafetyCheck": "Pass - Wooden pegs firmly attached, non-removable small gears"
+      },
+      "scriptBreakdown": [
+        {
+          "step": 1,
+          "timeRange": "00:00 - 00:03",
+          "phase": "HOOK",
+          "visualScene": "Super smooth spinning macro of 7 rainbow gears turning together as Ojas turns one peg.",
+          "audioVoiceover": "Turn one gear, and watch what happens to all six!",
+          "onScreenText": "Watch all 7 gears spin! ⚙️",
+          "cameraAngle": "ANG_MACRO",
+          "textBadge": "Age: 15M+"
+        },
+        {
+          "step": 2,
+          "timeRange": "00:03 - 00:10",
+          "phase": "PROBLEM_STATEMENT",
+          "visualScene": "Ojas removing one gear and discovering the chain breaks.",
+          "audioVoiceover": "This simple wooden gear board teaches mechanical cause-and-effect way better than any screen app.",
+          "onScreenText": "Mechanical Logic > Screen Apps 📱❌",
+          "cameraAngle": "ANG_TODDLER_POV",
+          "textBadge": "Skill: Cause & Effect"
+        },
+        {
+          "step": 3,
+          "timeRange": "00:10 - 00:25",
+          "phase": "PLAY_DEMONSTRATION",
+          "visualScene": "Ojas re-aligning gear teeth to repair the chain.",
+          "audioVoiceover": "Notice how he aligns the teeth! That requires micro-adjustments of wrists and fingers.",
+          "onScreenText": "Wrist & Finger Dexterity 🖐️",
+          "cameraAngle": "ANG_FACE_REACTION",
+          "textBadge": "Skill: Fine Motor"
+        },
+        {
+          "step": 4,
+          "timeRange": "00:25 - 00:33",
+          "phase": "RAVET_COMMUNITY_VALUE",
+          "visualScene": "Ravet map overlay pointing to Kiwale community cluster.",
+          "audioVoiceover": "Available right now in Kiwale on the Ravet Toy Exchange for just 10 points!",
+          "onScreenText": "Listed by Kiwale Parent Community 📍",
+          "cameraAngle": "ANG_WIDE_COPLAY",
+          "textBadge": "Kiwale / Ravet"
+        },
+        {
+          "step": 5,
+          "timeRange": "00:33 - 00:40",
+          "phase": "CALL_TO_ACTION",
+          "visualScene": "Ojas smiling and holding the gear board.",
+          "audioVoiceover": "Comment 'GEAR' to borrow this toy instantly!",
+          "onScreenText": "Comment 'GEAR' for direct link! 🔗",
+          "cameraAngle": "ANG_FLATLAY",
+          "textBadge": "Ravet Parent Swap"
+        }
+      ],
+      "webPlatformMapping": {
+        "toyListingId": "TOY-RAVET-309",
+        "webUrl": "https://ravettoyexchange.in/toys/TOY-RAVET-309",
+        "manyChatKeyword": "GEAR",
+        "autoDmMessage": "Hey Ravet Parent! ⚙️ Here is the direct link to borrow the Rainbow Wooden Gear Board (TOY-RAVET-309) from Kiwale/Ravet: https://ravettoyexchange.in/toys/TOY-RAVET-309",
+        "qrCodeData": "RAVET-EXCHANGE://toy/TOY-RAVET-309"
+      }
+    }
+  ]
+}

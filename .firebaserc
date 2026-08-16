@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "kids-toys-project"
+  },
+  "targets": {
+    "kids-toys-project": {
+      "hosting": {
+        "agile-dashboard": [
+          "kids-toys-project"
+        ]
+      }
+    }
+  }
+}

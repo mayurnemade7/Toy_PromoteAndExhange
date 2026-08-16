@@ -1,0 +1,108 @@
+# .github/workflows/deploy-agile-dashboard.yml
+# ─────────────────────────────────────────────────────────────────────────────
+# Deploys the Agile Dashboard to Firebase Hosting.
+# Firebase secrets are sourced from:
+#   Option A (HashiCorp Vault):  vault_addr + vault_token in GitHub Secrets
+#   Option B (GitHub Secrets):   FIREBASE_* vars set directly in repo secrets
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: Deploy Agile Dashboard
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'company/agile_dashboard/**'
+      - 'generate-firebase-config.js'
+      - '.github/workflows/deploy-agile-dashboard.yml'
+  workflow_dispatch:   # allow manual trigger from GitHub UI
+
+env:
+  FIREBASE_PROJECT_ID: kids-toys-project
+
+jobs:
+  deploy:
+    name: Build & Deploy to Firebase Hosting
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # needed for OIDC Vault auth
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # ── 2A. Fetch secrets from HashiCorp Vault (recommended) ─
+      #        Comment out this block and use 2B if not using Vault
+      - name: Import secrets from Vault
+        uses: hashicorp/vault-action@v3
+        with:
+          url: ${{ secrets.VAULT_ADDR }}
+          token: ${{ secrets.VAULT_TOKEN }}
+          # OR use OIDC (no long-lived tokens):
+          # method: jwt
+          # role: github-actions-agile-dashboard
+          secrets: |
+            secret/data/toy-exchange/firebase apiKey           | FIREBASE_API_KEY ;
+            secret/data/toy-exchange/firebase authDomain       | FIREBASE_AUTH_DOMAIN ;
+            secret/data/toy-exchange/firebase storageBucket    | FIREBASE_STORAGE_BUCKET ;
+            secret/data/toy-exchange/firebase appId            | FIREBASE_APP_ID ;
+            secret/data/toy-exchange/firebase messagingSenderId | FIREBASE_MESSAGING_SENDER_ID
+
+      # ── 2B. GitHub Secrets fallback ───────────────────────────
+      #        Use this instead of 2A if you prefer GitHub native secrets.
+      #        Set these in: Settings → Secrets → Actions
+      # env:
+      #   FIREBASE_API_KEY:             ${{ secrets.FIREBASE_API_KEY }}
+      #   FIREBASE_AUTH_DOMAIN:         ${{ secrets.FIREBASE_AUTH_DOMAIN }}
+      #   FIREBASE_STORAGE_BUCKET:      ${{ secrets.FIREBASE_STORAGE_BUCKET }}
+      #   FIREBASE_APP_ID:              ${{ secrets.FIREBASE_APP_ID }}
+      #   FIREBASE_MESSAGING_SENDER_ID: ${{ secrets.FIREBASE_MESSAGING_SENDER_ID }}
+
+      # ── 3. Generate firebase-config.js from injected env vars ─
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate firebase-config.js
+        run: node generate-firebase-config.js
+        env:
+          FIREBASE_API_KEY:             ${{ env.FIREBASE_API_KEY }}
+          FIREBASE_AUTH_DOMAIN:         ${{ env.FIREBASE_AUTH_DOMAIN }}
+          FIREBASE_PROJECT_ID:          ${{ env.FIREBASE_PROJECT_ID }}
+          FIREBASE_STORAGE_BUCKET:      ${{ env.FIREBASE_STORAGE_BUCKET }}
+          FIREBASE_MESSAGING_SENDER_ID: ${{ env.FIREBASE_MESSAGING_SENDER_ID }}
+          FIREBASE_APP_ID:              ${{ env.FIREBASE_APP_ID }}
+
+      # ── 4. Verify config was generated (no values logged) ─────
+      - name: Verify config exists
+        run: |
+          if [ ! -f company/agile_dashboard/firebase-config.js ]; then
+            echo "❌ firebase-config.js not generated!"; exit 1
+          fi
+          echo "✅ firebase-config.js present ($(wc -c < company/agile_dashboard/firebase-config.js) bytes)"
+          # Confirm no placeholder remains
+          if grep -q "PASTE_" company/agile_dashboard/firebase-config.js; then
+            echo "❌ Placeholder values still present!"; exit 1
+          fi
+          echo "✅ No placeholder values found"
+
+      # ── 5. Deploy to Firebase Hosting ─────────────────────────
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          projectId: ${{ env.FIREBASE_PROJECT_ID }}
+          target: agile-dashboard
+          channelId: live
+
+      # ── 6. Cleanup — ensure config never leaks in artifacts ───
+      - name: Remove generated config
+        if: always()
+        run: rm -f company/agile_dashboard/firebase-config.js
+
+      - name: Output deployment URL
+        run: echo "🚀 Deployed to https://${{ env.FIREBASE_PROJECT_ID }}.web.app"

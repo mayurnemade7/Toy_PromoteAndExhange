@@ -1,0 +1,86 @@
+npm verbose cli /Users/mayurnemade/.nvm/versions/node/v18.20.8/bin/node /Users/mayurnemade/.nvm/versions/node/v18.20.8/bin/npm
+npm info using npm@10.8.2
+npm info using node@v18.20.8
+npm verbose title npm install
+npm verbose argv "install" "--loglevel" "verbose"
+npm verbose logfile logs-max:10 dir:/Users/mayurnemade/.npm/_logs/2026-08-15T15_12_19_743Z-
+npm verbose logfile /Users/mayurnemade/.npm/_logs/2026-08-15T15_12_19_743Z-debug-0.log
+npm http fetch GET https://registry.npmjs.org/@google%2fgenai attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/@google%2fgenai attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/@google%2fgenai attempt 3 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/canvas-confetti attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/canvas-confetti attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/canvas-confetti attempt 3 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/lucide-react attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/lucide-react attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/lucide-react attempt 3 failed with ENOTFOUND
+npm http fetch GET 200 https://registry.npmjs.org/lucide-react 70055ms (cache stale)
+npm http fetch GET https://registry.npmjs.org/react attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/react attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/react attempt 3 failed with ENOTFOUND
+npm http fetch GET 200 https://registry.npmjs.org/react 70067ms (cache stale)
+npm http fetch GET https://registry.npmjs.org/react-dom attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/react-dom attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/react-dom attempt 3 failed with ENOTFOUND
+npm http fetch GET 200 https://registry.npmjs.org/react-dom 70077ms (cache stale)
+npm http fetch GET https://registry.npmjs.org/@types%2freact attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/@types%2freact attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/@types%2freact attempt 3 failed with ENOTFOUND
+npm http fetch GET 200 https://registry.npmjs.org/@types%2freact 70055ms (cache stale)
+npm http fetch GET https://registry.npmjs.org/@types%2freact-dom attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/@types%2freact-dom attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/@types%2freact-dom attempt 3 failed with ENOTFOUND
+npm http fetch GET 200 https://registry.npmjs.org/@types%2freact-dom 70037ms (cache stale)
+npm http fetch GET https://registry.npmjs.org/@vitejs%2fplugin-react attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/@vitejs%2fplugin-react attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/@vitejs%2fplugin-react attempt 3 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/vite attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/vite attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/vite attempt 3 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/csstype attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/@types%2fprop-types attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/loose-envify attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/scheduler attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/loose-envify attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/csstype attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/@types%2fprop-types attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/loose-envify attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/scheduler attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/loose-envify attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/csstype attempt 3 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/@types%2fprop-types attempt 3 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/loose-envify attempt 3 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/scheduler attempt 3 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/loose-envify attempt 3 failed with ENOTFOUND
+npm http fetch GET 200 https://registry.npmjs.org/loose-envify 70050ms (cache stale)
+npm http fetch GET 200 https://registry.npmjs.org/@types%2fprop-types 70055ms (cache stale)
+npm http fetch GET 200 https://registry.npmjs.org/csstype 70060ms (cache stale)
+npm http fetch GET 200 https://registry.npmjs.org/loose-envify 70066ms (cache stale)
+npm http fetch GET 200 https://registry.npmjs.org/scheduler 70077ms (cache stale)
+npm http fetch GET https://registry.npmjs.org/js-tokens attempt 1 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/js-tokens attempt 2 failed with ENOTFOUND
+npm http fetch GET https://registry.npmjs.org/js-tokens attempt 3 failed with ENOTFOUND
+npm http fetch GET 200 https://registry.npmjs.org/js-tokens 70017ms (cache stale)
+npm verbose type system
+npm verbose stack FetchError: request to https://registry.npmjs.org/@google%2fgenai failed, reason: getaddrinfo ENOTFOUND registry.npmjs.org
+npm verbose stack     at ClientRequest.<anonymous> (/Users/mayurnemade/.nvm/versions/node/v18.20.8/lib/node_modules/npm/node_modules/minipass-fetch/lib/index.js:130:14)
+npm verbose stack     at ClientRequest.emit (node:events:517:28)
+npm verbose stack     at _destroy (node:_http_client:882:13)
+npm verbose stack     at onSocketNT (node:_http_client:902:5)
+npm verbose stack     at process.processTicksAndRejections (node:internal/process/task_queues:83:21)
+npm error code ENOTFOUND
+npm error syscall getaddrinfo
+npm error errno ENOTFOUND
+npm error network request to https://registry.npmjs.org/@google%2fgenai failed, reason: getaddrinfo ENOTFOUND registry.npmjs.org
+npm error network This is a problem related to network connectivity.
+npm error network In most cases you are behind a proxy or have bad network settings.
+npm error network
+npm error network If you are behind a proxy, please make sure that the
+npm error network 'proxy' config is set properly.  See: 'npm help config'
+npm verbose cwd /Users/mayurnemade/Toy_PromoteAndExhange
+npm verbose os Darwin 25.2.0
+npm verbose node v18.20.8
+npm verbose npm  v10.8.2
+npm verbose exit 1
+npm verbose code 1
+npm error A complete log of this run can be found in: /Users/mayurnemade/.npm/_logs/2026-08-15T15_12_19_743Z-debug-0.log

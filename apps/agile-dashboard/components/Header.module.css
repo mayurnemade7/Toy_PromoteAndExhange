@@ -1,0 +1,68 @@
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 20px 14px;
+  border-bottom: 1px solid var(--border);
+  gap: 12px;
+  position: sticky;
+  top: 0;
+  background: rgba(11,15,25,.92);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  z-index: 50;
+}
+.brand {
+  font-family: var(--heading);
+  font-size: clamp(1rem, 4vw, 1.55rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff, var(--primary), var(--magenta));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.badge {
+  background: rgba(139,92,246,.2);
+  border: 1px solid rgba(139,92,246,.4);
+  color: #D8B4FE;
+  font-size: .72rem;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: var(--font);
+  font-weight: 600;
+  -webkit-text-fill-color: initial;
+  white-space: nowrap;
+}
+.actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.sync { display: flex; align-items: center; gap: 6px; font-size: .75rem; color: var(--muted); }
+.syncLabel { white-space: nowrap; }
+.dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--muted); transition: background .4s; flex-shrink: 0;
+}
+.dotLive { background: var(--green); box-shadow: 0 0 6px var(--green); animation: pulse 2s infinite; }
+.dotConnecting { background: var(--gold); animation: pulse 1s infinite; }
+.dotLocal { background: var(--muted); }
+.dotError { background: var(--red); }
+.btn {
+  padding: 8px 14px; border-radius: 8px; font-weight: 600; font-size: .82rem;
+  cursor: pointer; transition: all .2s; display: inline-flex; align-items: center;
+  gap: 6px; white-space: nowrap; font-family: var(--font); border: none;
+}
+.ghost {
+  background: rgba(255,255,255,.08);
+  border: 1px solid var(--border) !important;
+  color: var(--text);
+}
+.ghost:hover { background: rgba(255,255,255,.15); }
+.primary {
+  background: linear-gradient(135deg, var(--primary), var(--magenta));
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(139,92,246,.35);
+}
+.primary:hover { box-shadow: 0 6px 22px rgba(139,92,246,.55); transform: translateY(-1px); }
+@media (max-width: 767px) { .hideOnMobile { display: none; } }

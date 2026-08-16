@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Toy Exchange — Agile Command Center</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0B0F19;
+      --bg-card: rgba(22,28,45,0.85);
+      --bg-col: rgba(15,21,37,0.7);
+      --border: rgba(255,255,255,0.1);
+      --primary: hsl(265,89%,66%);
+      --magenta: hsl(330,85%,60%);
+      --cyan: hsl(190,90%,50%);
+      --green: hsl(145,75%,45%);
+      --red: hsl(0,85%,60%);
+      --gold: hsl(45,95%,55%);
+      --text: #F3F4F6;
+      --muted: #9CA3AF;
+      --font: 'Inter', sans-serif;
+      --head: 'Outfit', sans-serif;
+      --r: 12px;
+      --safe-b: env(safe-area-inset-bottom, 0px);
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);background-image:radial-gradient(at 0% 0%,rgba(139,92,246,.18) 0,transparent 55%),radial-gradient(at 100% 100%,rgba(236,72,153,.13) 0,transparent 55%);color:var(--text);font-family:var(--font);min-height:100vh;overflow-x:hidden}
+
+    /* HEADER */
+    header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:18px 20px 14px;border-bottom:1px solid var(--border);gap:12px;position:sticky;top:0;background:rgba(11,15,25,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:50}
+    .brand{font-family:var(--head);font-size:clamp(1rem,4vw,1.55rem);font-weight:800;background:linear-gradient(135deg,#fff,var(--primary),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .badge{background:rgba(139,92,246,.2);border:1px solid rgba(139,92,246,.4);color:#D8B4FE;font-size:.72rem;padding:3px 10px;border-radius:999px;font-family:var(--font);font-weight:600;-webkit-text-fill-color:initial;white-space:nowrap}
+    .h-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+    .sync{display:flex;align-items:center;gap:6px;font-size:.75rem;color:var(--muted)}
+    .dot{width:7px;height:7px;border-radius:50%;background:var(--muted);transition:background .4s;flex-shrink:0}
+    .dot.live{background:var(--green);box-shadow:0 0 6px var(--green);animation:pulse 2s infinite}
+    .dot.err{background:var(--red)}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+
+    /* BUTTONS */
+    .btn{background:rgba(255,255,255,.08);border:1px solid var(--border);color:var(--text);padding:8px 14px;border-radius:8px;font-weight:600;font-size:.82rem;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;font-family:var(--font)}
+    .btn:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.25)}
+    .btn-primary{background:linear-gradient(135deg,var(--primary),var(--magenta));border:none;box-shadow:0 4px 14px rgba(139,92,246,.35)}
+    .btn-primary:hover{box-shadow:0 6px 22px rgba(139,92,246,.55);transform:translateY(-1px)}
+    .btn-danger{background:rgba(239,68,68,.15);border-color:rgba(239,68,68,.35);color:#FCA5A5}
+    .btn-danger:hover{background:rgba(239,68,68,.3)}
+    .btn-cyan{background:linear-gradient(135deg,var(--cyan),var(--primary));border:none;box-shadow:0 4px 14px rgba(0,200,255,.3);font-size:.78rem}
+    .btn-cyan:hover{box-shadow:0 6px 22px rgba(0,200,255,.5);transform:translateY(-1px)}
+    .btn-sm{padding:5px 9px;font-size:.72rem;border-radius:6px}
+
+    /* PAGE */
+    .page{padding:16px 20px 80px}
+
+    /* STATS */
+    .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:16px}
+    .sc{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--r);padding:14px 16px;backdrop-filter:blur(16px)}
+    .sc-title{font-size:.7rem;color:var(--muted);text-transform:uppercase;font-weight:700;letter-spacing:.06em}
+    .sc-val{font-size:1.35rem;font-weight:800;font-family:var(--head);margin-top:4px}
+
+    /* CONTROLS */
+    .ctrl{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-bottom:20px;background:rgba(22,28,45,.5);backdrop-filter:blur(12px);border:1px solid var(--border);padding:12px 16px;border-radius:var(--r)}
+    .fg{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+    .fl{font-size:.78rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap}
+    select,input,textarea{background:rgba(11,15,25,.85);border:1px solid var(--border);color:var(--text);padding:8px 12px;border-radius:7px;font-size:.85rem;outline:none;font-family:var(--font);transition:border-color .2s}
+    select:focus,input:focus,textarea:focus{border-color:var(--primary)}
+    textarea{resize:vertical;min-height:90px}
+
+    /* KANBAN */
+    .board{display:grid;grid-template-columns:repeat(5,minmax(250px,1fr));gap:16px;align-items:start;overflow-x:auto;padding-bottom:16px}
+    .col{background:var(--bg-col);border:1px solid var(--border);border-radius:var(--r);padding:14px;min-height:420px;display:flex;flex-direction:column}
+    .col.col-active{border-color:rgba(0,210,255,.28)}
+    .col-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid rgba(255,255,255,.05)}
+    .col-title{font-size:.88rem;font-weight:700;display:flex;align-items:center;gap:8px}
+    .col-cnt{background:rgba(255,255,255,.1);font-size:.72rem;padding:2px 8px;border-radius:12px;color:var(--muted);font-weight:700}
+    .cards{display:flex;flex-direction:column;gap:10px;flex:1}
+
+    /* CARD */
+    .card{background:var(--bg-card);border:1px solid var(--border);border-radius:10px;padding:13px;backdrop-filter:blur(12px);transition:all .2s;position:relative}
+    .card:hover{border-color:rgba(139,92,246,.5);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
+    .card.agent-on{border-color:rgba(0,210,255,.55);box-shadow:0 0 18px rgba(0,210,255,.15)}
+    .card-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px;gap:6px}
+    .tid{font-size:.7rem;font-weight:700;color:var(--cyan)}
+    .pbadge{font-size:.62rem;font-weight:700;padding:2px 6px;border-radius:4px;text-transform:uppercase;white-space:nowrap}
+    .p0{background:rgba(239,68,68,.2);color:#FCA5A5;border:1px solid rgba(239,68,68,.4)}
+    .p1{background:rgba(245,158,11,.2);color:#FDE047;border:1px solid rgba(245,158,11,.4)}
+    .p2{background:rgba(59,130,246,.2);color:#93C5FD;border:1px solid rgba(59,130,246,.4)}
+    .ctitle{font-size:.88rem;font-weight:600;line-height:1.45;margin-bottom:8px}
+    .cdesc{font-size:.75rem;color:var(--muted);line-height:1.5;margin-bottom:10px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .cfooter{display:flex;justify-content:space-between;align-items:center;font-size:.72rem;border-top:1px solid rgba(255,255,255,.05);padding-top:8px;gap:6px;flex-wrap:wrap}
+    .abadge{display:flex;align-items:center;gap:5px;background:rgba(139,92,246,.15);border:1px solid rgba(139,92,246,.3);color:#DDD6FE;padding:3px 8px;border-radius:6px;font-weight:600}
+    .spts{background:rgba(255,255,255,.08);padding:2px 7px;border-radius:999px;font-weight:700;color:var(--muted)}
+    .cbtns{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+    .cbtn{flex:1;min-width:60px;padding:5px 7px;border-radius:6px;font-size:.7rem;font-weight:600;border:1px solid var(--border);background:rgba(255,255,255,.06);color:var(--text);cursor:pointer;transition:all .18s;font-family:var(--font);text-align:center}
+    .cbtn:hover{background:rgba(255,255,255,.14)}
+    .cbtn.adv{border-color:rgba(139,92,246,.4);color:#c4b5fd}
+    .cbtn.act{border-color:rgba(0,210,255,.4);color:#67e8f9;background:rgba(0,210,255,.06)}
+    .cbtn.act:hover{background:rgba(0,210,255,.18)}
+    .cbtn.act-on{background:rgba(0,210,255,.2);border-color:rgba(0,210,255,.6);color:#a5f3fc}
+    .empty{text-align:center;color:var(--muted);font-size:.8rem;padding:24px 12px;opacity:.6}
+
+    /* AGENT PANEL */
+    .agent-panel{margin-top:24px;background:rgba(0,210,255,.04);border:1px solid rgba(0,210,255,.2);border-radius:var(--r);padding:16px}
+    .ap-title{font-family:var(--head);font-size:.9rem;font-weight:700;color:var(--cyan);margin-bottom:12px;display:flex;align-items:center;gap:8px}
+    .ap-code{background:rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.08);border-radius:8px;padding:14px;font-size:.73rem;font-family:'Courier New',monospace;color:#a5f3fc;white-space:pre-wrap;word-break:break-all;max-height:200px;overflow-y:auto;line-height:1.6}
+    .ap-note{font-size:.72rem;color:var(--muted);margin-top:10px;line-height:1.7}
+
+    /* OVERLAY */
+    .overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);z-index:200;justify-content:center;align-items:flex-end;padding:0}
+    @media(min-width:640px){.overlay{align-items:center;padding:16px}}
+    .overlay.open{display:flex}
+
+    /* MODAL */
+    .modal{background:#111827;border:1px solid var(--border);border-radius:20px 20px 0 0;padding:24px;width:100%;max-height:92vh;overflow-y:auto;box-shadow:0 -20px 50px rgba(0,0,0,.6);animation:slideUp .25s ease}
+    @media(min-width:640px){.modal{border-radius:16px;max-width:540px;max-height:90vh;animation:fadeIn .2s ease}}
+    @keyframes slideUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+    @keyframes fadeIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+    .handle{width:40px;height:4px;background:rgba(255,255,255,.15);border-radius:2px;margin:0 auto 20px}
+    @media(min-width:640px){.handle{display:none}}
+    .m-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+    .m-title{font-family:var(--head);font-size:1.15rem;font-weight:700}
+    .xbtn{background:none;border:none;color:var(--muted);font-size:1.4rem;cursor:pointer;line-height:1;padding:4px}
+    .xbtn:hover{color:var(--text)}
+    .fg2{margin-bottom:14px}
+    .fg2 label{display:block;font-size:.76rem;font-weight:700;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:.04em}
+    .fg2 input,.fg2 select,.fg2 textarea{width:100%}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    @media(max-width:480px){.row2{grid-template-columns:1fr}}
+    .f-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px;flex-wrap:wrap}
+
+    /* DRAWER */
+    .drw-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(6px);z-index:150;justify-content:flex-end}
+    .drw-overlay.open{display:flex}
+    .drw{background:#0f1523;border-left:1px solid var(--border);width:100%;max-width:480px;height:100%;overflow-y:auto;padding:24px;animation:slideR .25s ease}
+    @media(max-width:600px){
+      .drw-overlay{align-items:flex-end}
+      .drw{max-width:100%;height:88vh;border-radius:20px 20px 0 0;border-left:none;border-top:1px solid var(--border);animation:slideUp .25s ease}
+    }
+    @keyframes slideR{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
+    .drw-hdr{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;gap:12px}
+    .drw-id{font-size:.7rem;font-weight:700;color:var(--cyan);margin-bottom:5px}
+    .drw-t{background:none;border:none;border-bottom:1px solid transparent;color:var(--text);font-family:var(--head);font-size:1.05rem;font-weight:700;width:100%;padding:0 0 4px;outline:none;transition:border-color .2s}
+    .drw-t:focus{border-bottom-color:var(--primary)}
+    .sec-lbl{font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:16px 0 8px}
+    .drw-desc{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:8px;padding:12px;font-size:.85rem;color:var(--text);font-family:var(--font);resize:vertical;width:100%;min-height:130px;outline:none;line-height:1.6}
+    .drw-desc:focus{border-color:var(--primary)}
+    .meta-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+    .meta-item label{font-size:.7rem;color:var(--muted);font-weight:700;display:block;margin-bottom:5px;text-transform:uppercase}
+    .meta-item select{width:100%;font-size:.82rem}
+    .agent-box{background:rgba(0,210,255,.06);border:1px solid rgba(0,210,255,.25);border-radius:10px;padding:14px;margin-top:16px}
+    .agent-box h4{font-size:.8rem;font-weight:700;color:var(--cyan);margin-bottom:8px}
+    .agent-box p{font-size:.75rem;color:var(--muted);line-height:1.6}
+    .agent-active-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(0,210,255,.15);border:1px solid rgba(0,210,255,.4);color:#67e8f9;padding:5px 12px;border-radius:999px;font-size:.75rem;font-weight:700;margin-top:8px}
+    .drw-actions{display:flex;gap:10px;margin-top:20px;flex-wrap:wrap}
+    .drw-actions .btn{flex:1;justify-content:center}
+
+    /* FAB */
+    .fab{display:none;position:fixed;bottom:calc(20px + var(--safe-b));right:20px;width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,var(--primary),var(--magenta));border:none;color:#fff;font-size:1.6rem;cursor:pointer;box-shadow:0 6px 24px rgba(139,92,246,.55);z-index:80;align-items:center;justify-content:center;transition:transform .2s;line-height:1}
+    .fab:hover{transform:scale(1.08)}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:calc(80px + var(--safe-b));left:50%;transform:translateX(-50%) translateY(16px);background:rgba(22,28,45,.96);border:1px solid var(--border);border-radius:10px;padding:11px 20px;font-size:.84rem;font-weight:600;opacity:0;transition:all .3s;z-index:999;white-space:nowrap;backdrop-filter:blur(12px);pointer-events:none}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+    /* LOADING */
+    .loader{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:9999;flex-direction:column;gap:14px;transition:opacity .4s}
+    .loader.gone{opacity:0;pointer-events:none}
+    .spin{width:36px;height:36px;border:3px solid rgba(139,92,246,.3);border-top-color:var(--primary);border-radius:50%;animation:spin .8s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .loader-txt{color:var(--muted);font-size:.84rem}
+
+    /* RESPONSIVE */
+    @media(max-width:767px){
+      body{padding-bottom:80px}
+      .board{display:flex;flex-direction:column;overflow-x:visible}
+      .col{min-height:auto}
+      .fab{display:flex}
+      .hide-mobile{display:none!important}
+      .stats{grid-template-columns:repeat(2,1fr)}
+      .agent-panel{display:none}
+    }
+    @media(min-width:768px) and (max-width:1100px){
+      .board{grid-template-columns:repeat(3,minmax(220px,1fr))}
+    }
+  </style>
+</head>
+<body>
+
+<div class="loader" id="loader">
+  <div class="spin"></div>
+  <div class="loader-txt">Connecting to real-time board…</div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<header>
+  <div class="brand">
+    ⚡ Toy Exchange Agile
+    <span class="badge">Sprint 1 • Mayur Enterprise</span>
+  </div>
+  <div class="h-actions">
+    <div class="sync">
+      <div class="dot" id="dot"></div>
+      <span id="sync-lbl">Connecting…</span>
+    </div>
+    <button class="btn btn-primary" onclick="openCreate()">+ New Story</button>
+    <button class="btn hide-mobile" onclick="doExport()">📥 Export CSV</button>
+  </div>
+</header>
+
+<div class="page">
+  <div class="stats">
+    <div class="sc"><div class="sc-title">Active Sprint</div><div class="sc-val">Sprint 1 (MVP)</div></div>
+    <div class="sc"><div class="sc-title">Total Points</div><div class="sc-val" id="s-total">0 pts</div></div>
+    <div class="sc"><div class="sc-title">Done Points</div><div class="sc-val" id="s-done" style="color:var(--green)">0 pts</div></div>
+    <div class="sc"><div class="sc-title">🤖 Agent Active</div><div class="sc-val" id="s-active" style="color:var(--cyan)">0</div></div>
+  </div>
+
+  <div class="ctrl">
+    <div class="fg">
+      <span class="fl">Persona:</span>
+      <select id="fa" onchange="render()">
+        <option value="ALL">All Roles</option>
+        <option value="AI_BusinessOwner_Mayur">💼 BusinessOwner</option>
+        <option value="AI_ProductOwner_Mayur">📝 ProductOwner</option>
+        <option value="AI_TechArchitect_Mayur">🏗️ TechArchitect</option>
+        <option value="AI_UIUXDesigner_Mayur">🎨 UIUXDesigner</option>
+        <option value="AI_Developer_Mayur">💻 Developer</option>
+        <option value="AI_QATester_Mayur">🧪 QATester</option>
+        <option value="AI_MarketingLead_Mayur">📣 MarketingLead</option>
+        <option value="AI_OpsSRE_Mayur">🛠️ OpsSRE</option>
+        <option value="AI_LegalCompliance_Mayur">⚖️ LegalCompliance</option>
+      </select>
+    </div>
+    <div class="fg">
+      <span class="fl">Priority:</span>
+      <select id="fp" onchange="render()">
+        <option value="ALL">All</option>
+        <option value="P0">P0 Blocker</option>
+        <option value="P1">P1 High</option>
+        <option value="P2">P2 Medium</option>
+      </select>
+    </div>
+    <div class="fg">
+      <span class="fl">View:</span>
+      <select id="fao" onchange="render()">
+        <option value="ALL">All Stories</option>
+        <option value="ACTIVE">🤖 Agent Active</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="board">
+    <div class="col"><div class="col-hdr"><div class="col-title">📋 Backlog</div><span class="col-cnt" id="cnt-backlog">0</span></div><div class="cards" id="col-backlog"></div></div>
+    <div class="col"><div class="col-hdr"><div class="col-title">🎯 Ready for Dev</div><span class="col-cnt" id="cnt-todo">0</span></div><div class="cards" id="col-todo"></div></div>
+    <div class="col col-active"><div class="col-hdr"><div class="col-title">⚡ In Progress</div><span class="col-cnt" id="cnt-in_progress">0</span></div><div class="cards" id="col-in_progress"></div></div>
+    <div class="col"><div class="col-hdr"><div class="col-title">🧪 QA &amp; Audit</div><span class="col-cnt" id="cnt-qa_testing">0</span></div><div class="cards" id="col-qa_testing"></div></div>
+    <div class="col"><div class="col-hdr"><div class="col-title">✅ Done</div><span class="col-cnt" id="cnt-done">0</span></div><div class="cards" id="col-done"></div></div>
+  </div>
+
+  <div class="agent-panel">
+    <div class="ap-title">🤖 Agent Pickup Feed — Live Active Stories</div>
+    <div class="ap-code" id="ap-json">No active stories yet.</div>
+    <div class="ap-note">
+      📡 <strong>REST Poll URL:</strong> <code id="ap-url" style="color:#67e8f9;font-size:.72rem;word-break:break-all"></code><br>
+      Filter results by <code>agentPickup === true</code>. Your agent polls this endpoint to discover tasks to work on.
+    </div>
+  </div>
+</div>
+
+<button class="fab" onclick="openCreate()">+</button>
+
+<!-- CREATE / EDIT MODAL -->
+<div class="overlay" id="ov-create">
+  <div class="modal">
+    <div class="handle"></div>
+    <div class="m-hdr">
+      <div class="m-title" id="m-title">Create User Story</div>
+      <button class="xbtn" onclick="closeCreate()">✕</button>
+    </div>
+    <form id="form" onsubmit="saveTicket(event)">
+      <input type="hidden" id="e-id">
+      <div class="fg2"><label>Story Title *</label><input type="text" id="e-title" required placeholder="e.g. Implement Trade Proposal Modal"></div>
+      <div class="fg2"><label>Description / Acceptance Criteria</label><textarea id="e-desc" placeholder="As a user, I want to…&#10;&#10;Acceptance Criteria:&#10;- Given… When… Then…"></textarea></div>
+      <div class="row2">
+        <div class="fg2">
+          <label>Assignee Persona</label>
+          <select id="e-assignee">
+            <option value="AI_BusinessOwner_Mayur">💼 BusinessOwner</option>
+            <option value="AI_ProductOwner_Mayur" selected>📝 ProductOwner</option>
+            <option value="AI_TechArchitect_Mayur">🏗️ TechArchitect</option>
+            <option value="AI_UIUXDesigner_Mayur">🎨 UIUXDesigner</option>
+            <option value="AI_Developer_Mayur">💻 Developer</option>
+            <option value="AI_QATester_Mayur">🧪 QATester</option>
+            <option value="AI_MarketingLead_Mayur">📣 MarketingLead</option>
+            <option value="AI_OpsSRE_Mayur">🛠️ OpsSRE</option>
+            <option value="AI_LegalCompliance_Mayur">⚖️ LegalCompliance</option>
+          </select>
+        </div>
+        <div class="fg2">
+          <label>Priority</label>
+          <select id="e-priority">
+            <option value="P0">P0 (Blocker)</option>
+            <option value="P1" selected>P1 (High)</option>
+            <option value="P2">P2 (Medium)</option>
+          </select>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="fg2">
+          <label>Story Points</label>
+          <select id="e-points">
+            <option value="1">1 pt</option><option value="2">2 pts</option><option value="3" selected>3 pts</option>
+            <option value="5">5 pts</option><option value="8">8 pts</option><option value="13">13 pts</option>
+          </select>
+        </div>
+        <div class="fg2">
+          <label>Status Column</label>
+          <select id="e-status">
+            <option value="backlog">Backlog</option>
+            <option value="todo" selected>Ready for Dev</option>
+            <option value="in_progress">In Progress</option>
+            <option value="qa_testing">QA &amp; Audit</option>
+            <option value="done">Done</option>
+          </select>
+        </div>
+      </div>
+      <div class="f-actions">
+        <button type="button" class="btn" onclick="closeCreate()">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="m-save">Save Story</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- DETAIL DRAWER -->
+<div class="drw-overlay" id="ov-drw" onclick="drwClickOut(event)">
+  <div class="drw" id="drw">
+    <div class="drw-hdr">
+      <div style="flex:1;min-width:0">
+        <div class="drw-id" id="d-id">—</div>
+        <input class="drw-t" id="d-title" placeholder="Story title…">
+      </div>
+      <button class="xbtn" onclick="closeDrw()">✕</button>
+    </div>
+    <div class="sec-lbl">Description / Acceptance Criteria</div>
+    <textarea class="drw-desc" id="d-desc" placeholder="As a user, I want…&#10;&#10;Acceptance Criteria:&#10;- Given… When… Then…"></textarea>
+    <div class="sec-lbl">Metadata</div>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <label>Assignee</label>
+        <select id="d-assignee">
+          <option value="AI_BusinessOwner_Mayur">💼 BusinessOwner</option>
+          <option value="AI_ProductOwner_Mayur">📝 ProductOwner</option>
+          <option value="AI_TechArchitect_Mayur">🏗️ TechArchitect</option>
+          <option value="AI_UIUXDesigner_Mayur">🎨 UIUXDesigner</option>
+          <option value="AI_Developer_Mayur">💻 Developer</option>
+          <option value="AI_QATester_Mayur">🧪 QATester</option>
+          <option value="AI_MarketingLead_Mayur">📣 MarketingLead</option>
+          <option value="AI_OpsSRE_Mayur">🛠️ OpsSRE</option>
+          <option value="AI_LegalCompliance_Mayur">⚖️ LegalCompliance</option>
+        </select>
+      </div>
+      <div class="meta-item"><label>Priority</label>
+        <select id="d-priority"><option value="P0">P0 Blocker</option><option value="P1">P1 High</option><option value="P2">P2 Medium</option></select>
+      </div>
+      <div class="meta-item"><label>Story Points</label>
+        <select id="d-points"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="5">5</option><option value="8">8</option><option value="13">13</option></select>
+      </div>
+      <div class="meta-item"><label>Status</label>
+        <select id="d-status">
+          <option value="backlog">Backlog</option><option value="todo">Ready for Dev</option>
+          <option value="in_progress">In Progress</option><option value="qa_testing">QA &amp; Audit</option><option value="done">Done</option>
+        </select>
+      </div>
+    </div>
+    <div class="agent-box">
+      <h4>🤖 Agent Pickup Status</h4>
+      <p id="d-agent-txt">This story is not active for agent pickup.</p>
+      <div id="d-agent-badge" style="display:none" class="agent-active-badge">
+        <span style="width:7px;height:7px;border-radius:50%;background:var(--cyan);display:inline-block;animation:pulse 1.5s infinite"></span>
+        Agent Pickup Active
+      </div>
+    </div>
+    <div class="drw-actions">
+      <button class="btn btn-cyan" id="d-agent-btn" onclick="toggleAgentDrw()">🤖 Mark Active for Agent</button>
+      <button class="btn btn-primary" onclick="saveDrw()">💾 Save Changes</button>
+      <button class="btn btn-danger" onclick="deleteDrw()">🗑</button>
+    </div>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+import { getFirestore, collection, onSnapshot, doc, setDoc, deleteDoc, getDocs }
+  from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+// ─────────────────────────────────────────────────────────────
+// Config is loaded from firebase-config.js (gitignored).
+//
+// Local dev:  run `node generate-firebase-config.js` after filling .env
+// CI/CD:      GitHub Actions fetches secrets from Vault and auto-generates it
+//
+// See: generate-firebase-config.js | .env.example | .github/workflows/
+// ─────────────────────────────────────────────────────────────
+let FB = null;
+let USE_FB = false;
+
+try {
+  const mod = await import('./firebase-config.js');
+  FB = mod.default;
+  USE_FB = !!(FB && FB.apiKey && !FB.apiKey.includes('__'));
+} catch (_) {
+  // firebase-config.js not present — running in local/offline mode
+  console.info('[AgileBoard] firebase-config.js not found → Local mode (localStorage).');
+}
+
+const SEED = [
+  {id:"BO-001",title:"Finalize Q3/Q4 Strategic OKRs & Monetization Levers",description:"Define KPIs, revenue targets, growth levers for Q3/Q4.\n\nAcceptance Criteria:\n- OKRs approved by Mayur\n- Monetization model documented\n- Aligned with product roadmap",assignee:"AI_BusinessOwner_Mayur",priority:"P0",points:5,status:"done",agentPickup:false,activatedAt:null},
+  {id:"PO-101",title:"Draft PRD & User Stories for Infinite Reel Feed",description:"Write the full Product Requirements Document for the reel feed.\n\nAcceptance Criteria:\n- PRD covers all user flows\n- 10+ user stories\n- Approved in sprint planning",assignee:"AI_ProductOwner_Mayur",priority:"P0",points:5,status:"done",agentPickup:false,activatedAt:null},
+  {id:"TA-201",title:"Design Serverless Microservices & Firestore Schemas",description:"Architect the backend: serverless functions, Firestore schema, API contracts.\n\nAC:\n- Architecture diagram published\n- Schema reviewed\n- Cost estimate documented",assignee:"AI_TechArchitect_Mayur",priority:"P0",points:8,status:"done",agentPickup:false,activatedAt:null},
+  {id:"DES-301",title:"Build Glassmorphism HSL Design Tokens & CSS Variables",description:"Create the design system: HSL tokens, typography, spacing, glassmorphism.\n\nAC:\n- Figma tokens exported\n- CSS variables implemented\n- Dark mode first",assignee:"AI_UIUXDesigner_Mayur",priority:"P1",points:3,status:"done",agentPickup:false,activatedAt:null},
+  {id:"DEV-101",title:"Implement Interactive Video Reel Feed & Swipe Gestures",description:"Build main video reel with vertical swipe, auto-play, like/save.\n\nAC:\n- Swipe between videos\n- Like/bookmark functional\n- Loads < 2s on 4G",assignee:"AI_Developer_Mayur",priority:"P0",points:8,status:"in_progress",agentPickup:true,activatedAt:new Date().toISOString()},
+  {id:"DEV-102",title:"Build Trade Proposal Bottom Sheet Modal & Inventory Picker",description:"Bottom sheet for toy trade proposals with inventory selection.\n\nAC:\n- Smooth bottom sheet animation\n- Inventory picker shows user toys\n- Trade sent to Firestore",assignee:"AI_Developer_Mayur",priority:"P0",points:5,status:"todo",agentPickup:false,activatedAt:null},
+  {id:"QA-401",title:"Execute OWASP Top 10 Security Audit & Input Sanitization",description:"Run OWASP checklist, fix all vulnerabilities.\n\nAC:\n- P0 vulnerabilities resolved\n- XSS/CSRF protection in place\n- Audit report published",assignee:"AI_QATester_Mayur",priority:"P0",points:3,status:"qa_testing",agentPickup:false,activatedAt:null},
+  {id:"MKT-501",title:"Plan Instagram Reels Viral Launch & Hashtag Campaign",description:"Pre-launch marketing across Instagram Reels, hashtags, influencer outreach.\n\nAC:\n- 5 Reels scripts written\n- 3 influencers identified\n- Launch date confirmed",assignee:"AI_MarketingLead_Mayur",priority:"P1",points:3,status:"todo",agentPickup:false,activatedAt:null},
+  {id:"OPS-601",title:"Configure Cloud Monitoring Telemetry & Uptime Webhooks",description:"GCP Cloud Monitoring, uptime checks, alerting, Slack webhook.\n\nAC:\n- Uptime check on prod\n- Alert policy created\n- Slack webhook tested",assignee:"AI_OpsSRE_Mayur",priority:"P1",points:2,status:"todo",agentPickup:false,activatedAt:null},
+  {id:"LEG-701",title:"Audit COPPA Child Safety Rules & Terms of Service",description:"COPPA compliance review, update ToS and Privacy Policy.\n\nAC:\n- COPPA checklist complete\n- ToS reviewed by legal\n- Privacy Policy updated",assignee:"AI_LegalCompliance_Mayur",priority:"P0",points:3,status:"done",agentPickup:false,activatedAt:null}
+];
+
+let tickets = [];
+let drwId = null;
+const $ = id => document.getElementById(id);
+const cols = ['backlog','todo','in_progress','qa_testing','done'];
+
+const setSS = (state, lbl) => { $('dot').className='dot '+state; $('sync-lbl').textContent=lbl; };
+const toast = (msg,ms=2500) => { const t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),ms); };
+const esc = s => (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+const hide = () => { const l=$('loader'); l.classList.add('gone'); setTimeout(()=>l.style.display='none',400); };
+
+let app, db, col;
+
+async function init() {
+  if (USE_FB) {
+    app = initializeApp(FB);
+    db = getFirestore(app);
+    col = collection(db, 'agile_tickets');
+    const snap = await getDocs(col);
+    if (snap.empty) {
+      for (const t of SEED) await setDoc(doc(col,t.id), {...t, _at: new Date().toISOString()});
+      toast('✅ Board seeded!');
+    }
+    setSS('','Connecting…');
+    onSnapshot(col, s => { tickets=s.docs.map(d=>({...d.data(),id:d.id})); render(); updateFeed(); setSS('live','Live ✓'); hide(); }, e => { setSS('err','Error'); console.error(e); });
+    $('ap-url').textContent = `https://firestore.googleapis.com/v1/projects/${FB.projectId}/databases/(default)/documents/agile_tickets?key=${FB.apiKey}`;
+  } else {
+    setSS('','Local mode (add Firebase config)');
+    $('sync-lbl').textContent='Local mode';
+    tickets = JSON.parse(localStorage.getItem('tae_v3')) || SEED;
+    hide(); render(); updateFeed();
+  }
+}
+
+async function persist(t) {
+  if (USE_FB) { await setDoc(doc(col,t.id),{...t,_at:new Date().toISOString()}); }
+  else { const i=tickets.findIndex(x=>x.id===t.id); if(i>=0)tickets[i]=t;else tickets.push(t); save(); render(); updateFeed(); }
+}
+async function remove(id) {
+  if (USE_FB) { await deleteDoc(doc(col,id)); }
+  else { tickets=tickets.filter(t=>t.id!==id); save(); render(); updateFeed(); }
+}
+function save() { localStorage.setItem('tae_v3',JSON.stringify(tickets)); }
+
+window.render = function() {
+  const fa=$('fa').value, fp=$('fp').value, fao=$('fao').value;
+  cols.forEach(c=>{ $('col-'+c).innerHTML=''; });
+  let tot=0,don=0,act=0; const cnt=Object.fromEntries(cols.map(c=>[c,0]));
+  const vis=tickets.filter(t=>{
+    if(fa!=='ALL'&&t.assignee!==fa)return false;
+    if(fp!=='ALL'&&t.priority!==fp)return false;
+    if(fao==='ACTIVE'&&!t.agentPickup)return false;
+    return true;
+  });
+  vis.forEach(t=>{
+    tot+=+t.points; if(t.status==='done')don+=+t.points; if(t.agentPickup)act++;
+    cnt[t.status]=(cnt[t.status]||0)+1;
+    const card=document.createElement('div');
+    card.className='card'+(t.agentPickup?' agent-on':'');
+    card.innerHTML=`
+      <div class="card-hdr"><span class="tid">${t.id}</span><span class="pbadge ${t.priority.toLowerCase()}">${t.priority}</span></div>
+      <div class="ctitle">${esc(t.title)}</div>
+      ${t.description?`<div class="cdesc">${esc(t.description)}</div>`:''}
+      <div class="cfooter">
+        <div class="abadge">👤 ${t.assignee.replace('AI_','').replace('_Mayur','')}</div>
+        <div class="spts">${t.points} pts</div>
+      </div>
+      <div class="cbtns">
+        <button class="cbtn" onclick="openDrw('${t.id}');event.stopPropagation()">✏️ Detail</button>
+        <button class="cbtn adv" onclick="advance('${t.id}');event.stopPropagation()">→ Next</button>
+        <button class="cbtn act ${t.agentPickup?'act-on':''}" onclick="toggleAgent('${t.id}');event.stopPropagation()">${t.agentPickup?'🤖 Active ✓':'🤖 Activate'}</button>
+      </div>`;
+    $('col-'+t.status).appendChild(card);
+  });
+  cols.forEach(c=>{ if(!cnt[c]) $('col-'+c).innerHTML='<div class="empty">No stories</div>'; $('cnt-'+c).textContent=cnt[c]||0; });
+  $('s-total').textContent=tot+' pts'; $('s-done').textContent=don+' pts'; $('s-active').textContent=act;
+};
+
+function updateFeed() {
+  const active=tickets.filter(t=>t.agentPickup).map(t=>({id:t.id,title:t.title,description:t.description||'',assignee:t.assignee,priority:t.priority,points:t.points,status:t.status,agentPickup:true,activatedAt:t.activatedAt}));
+  $('ap-json').textContent=active.length?JSON.stringify(active,null,2):'No active stories. Click "🤖 Activate" on a card.';
+}
+
+window.advance=async function(id){
+  const t=tickets.find(x=>x.id===id); if(!t)return;
+  const next=(cols.indexOf(t.status)+1)%cols.length; t.status=cols[next];
+  await persist(t); toast('→ Moved to '+cols[next].replace('_',' '));
+};
+window.toggleAgent=async function(id){
+  const t=tickets.find(x=>x.id===id); if(!t)return;
+  t.agentPickup=!t.agentPickup; t.activatedAt=t.agentPickup?new Date().toISOString():null;
+  await persist(t); updateFeed(); toast(t.agentPickup?'🤖 Activated for agent!':'⏸ Agent deactivated');
+};
+
+// MODAL
+window.openCreate=function(id){
+  const isEdit=!!id; $('m-title').textContent=isEdit?'Edit Story':'Create User Story'; $('m-save').textContent=isEdit?'Update':'Save Story'; $('e-id').value=id||'';
+  if(isEdit){const t=tickets.find(x=>x.id===id);if(!t)return;$('e-title').value=t.title;$('e-desc').value=t.description||'';$('e-assignee').value=t.assignee;$('e-priority').value=t.priority;$('e-points').value=t.points;$('e-status').value=t.status;}
+  else{$('form').reset();}
+  $('ov-create').classList.add('open'); setTimeout(()=>$('e-title').focus(),100);
+};
+window.closeCreate=()=>$('ov-create').classList.remove('open');
+window.saveTicket=async function(e){
+  e.preventDefault();
+  const eid=$('e-id').value, isEdit=!!eid;
+  const old=isEdit?tickets.find(t=>t.id===eid):{};
+  const t={id:isEdit?eid:`STORY-${Date.now().toString(36).toUpperCase()}`,title:$('e-title').value.trim(),description:$('e-desc').value.trim(),assignee:$('e-assignee').value,priority:$('e-priority').value,points:parseInt($('e-points').value),status:$('e-status').value,agentPickup:old.agentPickup||false,activatedAt:old.activatedAt||null};
+  await persist(t); closeCreate(); toast(isEdit?'✅ Updated!':'✅ Story created!');
+};
+
+// DRAWER
+window.openDrw=function(id){
+  const t=tickets.find(x=>x.id===id);if(!t)return; drwId=id;
+  $('d-id').textContent=t.id; $('d-title').value=t.title; $('d-desc').value=t.description||'';
+  $('d-assignee').value=t.assignee; $('d-priority').value=t.priority; $('d-points').value=t.points; $('d-status').value=t.status;
+  updateDrwAgent(t.agentPickup,t.activatedAt);
+  $('ov-drw').classList.add('open'); setTimeout(()=>$('d-desc').focus(),150);
+};
+function updateDrwAgent(on,at){
+  $('d-agent-badge').style.display=on?'inline-flex':'none';
+  $('d-agent-txt').textContent=on?'Active since: '+(at?new Date(at).toLocaleString():'now'):'Not active for agent pickup.';
+  $('d-agent-btn').textContent=on?'⏸ Deactivate Agent':'🤖 Mark Active for Agent';
+}
+window.toggleAgentDrw=async function(){
+  if(!drwId)return; await toggleAgent(drwId);
+  const t=tickets.find(x=>x.id===drwId); if(t)updateDrwAgent(t.agentPickup,t.activatedAt);
+};
+window.saveDrw=async function(){
+  if(!drwId)return; const t=tickets.find(x=>x.id===drwId);if(!t)return;
+  t.title=$('d-title').value.trim(); t.description=$('d-desc').value.trim();
+  t.assignee=$('d-assignee').value; t.priority=$('d-priority').value;
+  t.points=parseInt($('d-points').value); t.status=$('d-status').value;
+  await persist(t); toast('💾 Saved!'); closeDrw();
+};
+window.deleteDrw=async function(){
+  if(!drwId||!confirm('Delete this story?'))return;
+  await remove(drwId); closeDrw(); toast('🗑 Deleted');
+};
+window.closeDrw=()=>{ $('ov-drw').classList.remove('open'); drwId=null; };
+window.drwClickOut=e=>{ if(e.target===$('ov-drw'))closeDrw(); };
+
+window.doExport=function(){
+  let csv="ID,Title,Description,Assignee,Priority,Points,Status,AgentActive\n";
+  tickets.forEach(t=>{ csv+=`"${t.id}","${(t.title||'').replace(/"/g,'""')}","${(t.description||'').replace(/"/g,'""').replace(/\n/g,' ')}","${t.assignee}","${t.priority}",${t.points},"${t.status}","${t.agentPickup?'YES':'NO'}"\n`; });
+  Object.assign(document.createElement('a'),{href:URL.createObjectURL(new Blob([csv],{type:'text/csv'})),download:'AgileBoard_ToyExchange.csv'}).click();
+  toast('📥 CSV exported!');
+};
+
+init();
+</script>
+</body>
+</html>
