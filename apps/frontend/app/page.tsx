@@ -14,12 +14,13 @@ import ListToyModal from '../components/ListToyModal';
 import GeminiAIMatchmakerModal from '../components/GeminiAIMatchmakerModal';
 import MyExchangesModal from '../components/MyExchangesModal';
 
-// Mock Initial Data
+// Mock Initial Data (used only as loading fallback or if DB is empty)
 import { initialToys } from '../data/toysData';
 
 export default function HomePage() {
   // State Management
   const [toys, setToys] = useState(initialToys);
+  const [isLoading, setIsLoading] = useState(true);
   const [exchangeTickets, setExchangeTickets] = useState([
     {
       id: '901',
@@ -36,6 +37,22 @@ export default function HomePage() {
       createdTime: '2 hours ago'
     }
   ]);
+
+  // Fetch real toys from API on mount
+  React.useEffect(() => {
+    fetch("/api/toys")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.ok && data.toys.length > 0) {
+          setToys(data.toys);
+        }
+        setIsLoading(false);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch toys", err);
+        setIsLoading(false);
+      });
+  }, []);
 
   // Filter States
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -60,9 +77,23 @@ export default function HomePage() {
   };
 
   // Handlers
-  const handleAddToy = (newToy: any) => {
-    setToys([newToy, ...toys]);
-    showToast(`🎉 "${newToy.title}" listed successfully in Ravet catalog!`);
+  const handleAddToy = async (newToy: any) => {
+    try {
+      const res = await fetch("/api/toys", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ toy: newToy }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        setToys([data.toy, ...toys]);
+        showToast(`🎉 "${data.toy.title}" listed successfully and saved to database!`);
+      } else {
+        showToast(`❌ Failed to list toy: ${data.error}`);
+      }
+    } catch (err) {
+      showToast(`❌ Error saving toy to database.`);
+    }
   };
 
   const handleSubmitExchangeTicket = (ticketData: any) => {

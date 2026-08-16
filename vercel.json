@@ -1,4 +1,5 @@
 {
+  "name": "toy-exchange-dashboard",
   "buildCommand": "pnpm build",
   "outputDirectory": "apps/agile-dashboard/.next",
   "framework": "nextjs",

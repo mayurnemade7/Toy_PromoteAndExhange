@@ -1,0 +1,21 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Default open read/write for development (Agile Dashboard)
+    match /{document=**} {
+      allow read, write: if true;
+    }
+
+    // Toy Exchange Collections
+    match /users/{userId} {
+      allow read, write: if true; // In production, add: if request.auth != null && request.auth.uid == userId;
+    }
+    match /toys/{toyId} {
+      allow read, write: if true;
+    }
+    match /exchanges/{exchangeId} {
+      allow read, write: if true;
+    }
+  }
+}
