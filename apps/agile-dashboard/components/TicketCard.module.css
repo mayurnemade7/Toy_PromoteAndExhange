@@ -1,38 +1,189 @@
 .card {
-  background: var(--bg-card); border: 1px solid var(--border);
-  border-radius: 10px; padding: 13px; backdrop-filter: blur(12px);
-  transition: all .2s; position: relative;
+  background: #1E293B;
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 10px;
+  padding: 14px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
 }
-.card:hover { border-color: rgba(139,92,246,.5); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,.4); }
-.agentOn { border-color: rgba(0,210,255,.55) !important; box-shadow: 0 0 18px rgba(0,210,255,.15) !important; }
-.header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 7px; gap: 6px; }
-.id { font-size: .7rem; font-weight: 700; color: var(--cyan); }
-.priority { font-size: .62rem; font-weight: 700; padding: 2px 6px; border-radius: 4px; text-transform: uppercase; white-space: nowrap; }
-.p0 { background: rgba(239,68,68,.2); color: #FCA5A5; border: 1px solid rgba(239,68,68,.4); }
-.p1 { background: rgba(245,158,11,.2); color: #FDE047; border: 1px solid rgba(245,158,11,.4); }
-.p2 { background: rgba(59,130,246,.2); color: #93C5FD; border: 1px solid rgba(59,130,246,.4); }
-.title { font-size: .88rem; font-weight: 600; line-height: 1.45; margin-bottom: 8px; color: var(--text); }
-.descPreview {
-  font-size: .75rem; color: var(--muted); line-height: 1.5; margin-bottom: 10px;
-  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+
+.card:hover {
+  background: #243248;
+  border-color: rgba(99, 102, 241, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
 }
-.footer {
-  display: flex; justify-content: space-between; align-items: center;
-  font-size: .72rem; border-top: 1px solid rgba(255,255,255,.05); padding-top: 8px; gap: 6px;
+
+.agentOn {
+  border-color: rgba(0, 210, 255, 0.6) !important;
+  background: linear-gradient(180deg, #1E293B 0%, rgba(8, 51, 68, 0.4) 100%) !important;
+  box-shadow: 0 0 16px rgba(0, 210, 255, 0.15) !important;
 }
-.assignee {
-  background: rgba(139,92,246,.15); border: 1px solid rgba(139,92,246,.3);
-  color: #DDD6FE; padding: 3px 8px; border-radius: 6px; font-weight: 600;
+
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
 }
-.points { background: rgba(255,255,255,.08); padding: 2px 7px; border-radius: 999px; font-weight: 700; color: var(--muted); }
-.actions { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
-.btn {
-  flex: 1; min-width: 60px; padding: 5px 7px; border-radius: 6px; font-size: .7rem; font-weight: 600;
-  border: 1px solid var(--border); background: rgba(255,255,255,.06); color: var(--text);
-  cursor: pointer; transition: all .18s; font-family: var(--font); text-align: center;
+
+.ticketId {
+  font-family: monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #94A3B8;
+  letter-spacing: 0.5px;
 }
-.btn:hover { background: rgba(255,255,255,.14); }
-.advance { border-color: rgba(139,92,246,.4); color: #c4b5fd; }
-.agent { border-color: rgba(0,210,255,.4); color: #67e8f9; background: rgba(0,210,255,.06); }
-.agent:hover { background: rgba(0,210,255,.18); }
-.agentActive { background: rgba(0,210,255,.2) !important; border-color: rgba(0,210,255,.7) !important; color: #a5f3fc !important; }
+
+.topTags {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.priorityBadge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.p0 {
+  background: rgba(239, 68, 68, 0.15);
+  color: #FCA5A5;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.p1 {
+  background: rgba(245, 158, 11, 0.15);
+  color: #FDE047;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+.p2 {
+  background: rgba(59, 130, 246, 0.15);
+  color: #93C5FD;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.agentToggle {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: #94A3B8;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.agentToggle:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+}
+
+.agentActive {
+  background: rgba(0, 210, 255, 0.2) !important;
+  border-color: rgba(0, 210, 255, 0.7) !important;
+  color: #67E8F9 !important;
+}
+
+.title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: #F8FAFC;
+  margin: 0;
+}
+
+.descSnippet {
+  font-size: 0.75rem;
+  color: #94A3B8;
+  line-height: 1.45;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  gap: 8px;
+}
+
+.assigneePill {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 0.72rem;
+  color: #CBD5E1;
+}
+
+.avatarIcon {
+  font-size: 0.75rem;
+}
+
+.assigneeName {
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 110px;
+}
+
+.rightActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pointsBadge {
+  background: rgba(255, 255, 255, 0.08);
+  color: #CBD5E1;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 999px;
+}
+
+.nextBtn {
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(99, 102, 241, 0.35);
+  color: #A5B4FC;
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  padding: 0;
+}
+
+.nextBtn:hover {
+  background: #6366F1;
+  color: #FFFFFF;
+  transform: scale(1.08);
+}

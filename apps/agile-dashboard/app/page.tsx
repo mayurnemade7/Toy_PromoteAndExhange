@@ -1,5 +1,5 @@
 "use client";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useMemo } from "react";
 import { useTickets } from "@/hooks/useTickets";
 import Header from "@/components/Header";
 import StatsBar from "@/components/StatsBar";
@@ -12,12 +12,12 @@ import Toast, { showToast } from "@/components/Toast";
 import type { Ticket } from "@/lib/types";
 import styles from "./page.module.css";
 
-const DEFAULT_FILTERS: Filters = { assignee: "ALL", priority: "ALL", agentOnly: false };
+const DEFAULT_FILTERS: Filters = { search: "", assignee: "ALL", priority: "ALL", agentOnly: false };
 
 export default function AgileDashboard() {
   const {
     tickets, syncState, activeStories,
-    persist, deleteTicket, advanceStatus, toggleAgentPickup, createTicket, resetBoard,
+    persist, deleteTicket, advanceStatus, toggleAgentPickup, createTicket,
   } = useTickets();
 
   const [filters, setFilters] = useState<Filters>(DEFAULT_FILTERS);
@@ -55,17 +55,10 @@ export default function AgileDashboard() {
     showToast("✅ Story created!");
   }, [createTicket]);
 
-  const handleReset = useCallback(async () => {
-    if (window.confirm("Are you sure you want to reset all stories to 'To-Do' and scratch state?")) {
-      await resetBoard();
-      showToast("🔄 Agile Board reset to scratch!");
-    }
-  }, [resetBoard]);
-
   const handleExport = useCallback(() => {
     const header = "ID,Title,Description,Assignee,Priority,Points,Status,AgentActive\n";
     const rows = tickets.map((t) =>
-      `"${t.id}","${t.title.replace(/"/g, '""')}","${(t.description ?? "").replace(/"/g, '""'). replace(/\n/g," ")}","${t.assignee}","${t.priority}",${t.points},"${t.status}","${t.agentPickup ? "YES" : "NO"}"`
+      `"${t.id}","${t.title.replace(/"/g, '""')}","${(t.description ?? "").replace(/"/g, '""').replace(/\n/g," ")}","${t.assignee}","${t.priority}",${t.points},"${t.status}","${t.agentPickup ? "YES" : "NO"}"`
     );
     const csv = header + rows.join("\n");
     const a = Object.assign(document.createElement("a"), {
@@ -76,14 +69,37 @@ export default function AgileDashboard() {
     showToast("📥 CSV exported!");
   }, [tickets]);
 
+  const filteredCount = useMemo(() => {
+    return tickets.filter((t) => {
+      if (filters.search.trim()) {
+        const q = filters.search.toLowerCase().trim();
+        if (!t.id.toLowerCase().includes(q) && !t.title.toLowerCase().includes(q) && !(t.description || "").toLowerCase().includes(q)) {
+          return false;
+        }
+      }
+      if (filters.assignee !== "ALL" && t.assignee !== filters.assignee) return false;
+      if (filters.priority !== "ALL" && t.priority !== filters.priority) return false;
+      if (filters.agentOnly && !t.agentPickup) return false;
+      return true;
+    }).length;
+  }, [tickets, filters]);
+
   return (
     <div className={styles.page}>
-      <Header syncState={syncState} onCreateStory={() => setCreateOpen(true)} onExport={handleExport} onReset={handleReset} />
-
+      <Header
+        syncState={syncState}
+        onCreateStory={() => setCreateOpen(true)}
+        onExport={handleExport}
+      />
 
       <main className={styles.main}>
         <StatsBar tickets={tickets} />
-        <FilterBar filters={filters} onChange={setFilters} />
+        <FilterBar
+          filters={filters}
+          onChange={setFilters}
+          totalStoriesCount={tickets.length}
+          filteredStoriesCount={filteredCount}
+        />
         <KanbanBoard
           tickets={tickets}
           filters={filters}
